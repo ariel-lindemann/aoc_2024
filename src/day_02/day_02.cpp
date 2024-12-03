@@ -41,7 +41,7 @@ std::pair<bool, int> line_is_safe(const std::vector<int> &numbers) {
 }
 
 std::pair<bool, int> line_is_safe_skip_index(std::vector<int> numbers,
-                                                    int index) {
+                                             int index) {
   numbers.erase(numbers.begin() + index);
   return line_is_safe(numbers);
 }
