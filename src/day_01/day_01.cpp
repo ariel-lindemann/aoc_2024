@@ -2,10 +2,10 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <ranges>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <ranges>
 
 #include "../common/args.hpp"
 
@@ -27,7 +27,7 @@ std::pair<std::vector<int>, std::vector<int>> read_inputs(std::ifstream &file) {
 int distance(std::vector<int> sorted_left, std::vector<int> sorted_right) {
   int distance = 0;
 
-  for (int i = 0; i < sorted_left.size(); i++) {
+  for (size_t i = 0; i < sorted_left.size(); i++) {
     int difference = abs(sorted_left[i] - sorted_right[i]);
     distance += difference;
   }
