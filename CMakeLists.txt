@@ -12,6 +12,7 @@ file(GLOB_RECURSE COMMON_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/common/*.cpp"
 add_executable(Day01 src/day_01/day_01.cpp ${COMMON_SOURCES})
 add_executable(Day02 src/day_02/day_02.cpp ${COMMON_SOURCES})
 add_executable(Day03 src/day_03/day_03.cpp ${COMMON_SOURCES})
+add_executable(Day04 src/day_04/day_04.cpp ${COMMON_SOURCES})
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
-install(TARGETS Day01 Day02 Day03 DESTINATION bin)
+install(TARGETS Day01 Day02 Day03 Day04 DESTINATION bin)
