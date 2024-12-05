@@ -5,7 +5,7 @@
 
 #include "../common/args.hpp"
 
-std::regex construct_regex(const std::string &word, int line_length) {
+std::regex construct_words_regex(const std::string &word, int line_length) {
   const std::string length_str = std::to_string(line_length);
 
   auto construct_regex_string = [&length_str](std::string_view s) {
@@ -40,59 +40,30 @@ int get_line_length(std::string_view s) {
   return static_cast<int>(s.find('\n'));
 }
 
-std::pair<std::regex, std::regex> regex_pairs(const std::string &word,
-                                              int line_length) {
-  std::string word_rev = word;
-  std::ranges::reverse(word_rev);
-
-  const std::regex pattern = construct_regex(word, line_length);
-  const std::regex pattern_rev = construct_regex(word_rev, line_length);
-  return std::make_pair(pattern, pattern_rev);
-}
-
-int vertical_occurences(const std::string &str) {
-  const int line_length = get_line_length(str);
-  auto [pattern, pattern_reverse] = regex_pairs("XMAS", line_length);
-
-  return find_regex_occurences(str, pattern) +
-         find_regex_occurences(str, pattern_reverse);
-}
-
-int horizontal_occurences(const std::string &str) {
-  const std::regex pattern("XMAS");
-  const std::regex pattern_reverse("SAMX");
-
-  return find_regex_occurences(str, pattern) +
-         find_regex_occurences(str, pattern_reverse);
-}
-
-int diagonal_left(const std::string &str) {
-  const int line_length = get_line_length(str);
-  auto [pattern, pattern_reverse] = regex_pairs("XMAS", line_length - 1);
-
-  int x = find_regex_occurences(str, pattern);
-  int y = find_regex_occurences(str, pattern_reverse);
-
-  return x + y;
-}
-
-int diagonal_right(const std::string &str) {
-  const int line_length = get_line_length(str);
-  auto [pattern, pattern_reverse] = regex_pairs("XMAS", line_length + 1);
-
-  int x = find_regex_occurences(str, pattern);
-  int y = find_regex_occurences(str, pattern_reverse);
-
-  return x + y;
-}
-
 int find_word_occurences(const std::string &file_contents) {
   int occurences = 0;
+  const std::string word = "XMAS";
+  const int line_length = get_line_length(file_contents);
 
-  occurences += horizontal_occurences(file_contents);
-  occurences += vertical_occurences(file_contents);
-  occurences += diagonal_left(file_contents);
-  occurences += diagonal_right(file_contents);
+  auto word_occurences = [file_contents, word](int line_length) {
+    std::string word_rev = word;
+    std::ranges::reverse(word_rev);
+
+    const std::regex pattern = construct_words_regex(word, line_length);
+    const std::regex pattern_rev = construct_words_regex(word_rev, line_length);
+
+    return find_regex_occurences(file_contents, pattern) +
+           find_regex_occurences(file_contents, pattern_rev);
+  };
+
+  // horizontal
+  occurences += word_occurences(0);
+  // vertical
+  occurences += word_occurences(line_length);
+  // diagonal left
+  occurences += word_occurences(line_length - 1);
+  // diagonal right
+  occurences += word_occurences(line_length + 1);
 
   return occurences;
 }
