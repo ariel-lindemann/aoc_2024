@@ -68,17 +68,14 @@ int find_word_occurences(const std::string &file_contents) {
   return occurences;
 }
 
-std::regex construct_x_mas_regex(const char tl, const char tr, const char bl,
-                                 const char br, int line_length) {
-  const std::string TOP_LEFT(1, tl);
-  const std::string TOP_RIGHT(1, tr);
+std::regex construct_x_mas_regex(const char TOP_LEFT, const char TOP_RIGHT,
+                                 const char BOTTOM_LEFT,
+                                 const char BOTTOM_RIGHT, int line_length) {
+  using namespace std::string_literals;
   const std::string CENTER = "A";
-  const std::string BOTTOM_LEFT(1, bl);
-  const std::string BOTTOM_RIGHT(1, br);
-
   const std::string D = std::to_string(line_length - 1);
 
-  const std::string pattern = "(?=" + TOP_LEFT + "(.)" + TOP_RIGHT +
+  const std::string pattern = "(?="s + TOP_LEFT + "(.)" + TOP_RIGHT +
                               "(.|\\n){" + D + "}" + CENTER + "(.|\\n){" + D +
                               "}" + BOTTOM_LEFT + "(.)" + BOTTOM_RIGHT + ")";
   return std::regex(pattern);
